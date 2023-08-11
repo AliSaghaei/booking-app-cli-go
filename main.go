@@ -23,34 +23,34 @@ func main() {
 	firstName,lastName,email, userTickets := getUserInput()
 
 	// User input validation function
-	isValidName, isValidEmail, isValidTicketNumber := validateUserInput(firstName,lastName, email, userTickets)
+	isValidName, isValidEmail, isValidTicketNumber := ValidateUserInput(firstName,lastName, email, userTickets, remainingTickets)
 
 	// Condition for program logic (booking) execution
-	if isValidName && isValidEmail && isValidTicketNumber {
+		if isValidName && isValidEmail && isValidTicketNumber {
 		
-		bookTicket(userTickets, firstName, lastName,email)
-	
-		// Call function GetFirstNames
-		firstNames := getFirstNames()
-		fmt.Printf("The fist names of bookings are: %v\n", firstNames)
+			bookTicket(userTickets, firstName, lastName,email)
+		
+			// Call function GetFirstNames
+			firstNames := getFirstNames()
+			fmt.Printf("The fist names of bookings are: %v\n", firstNames)
 
-		// ending the program when we run out of tickets
-		if remainingTickets == 0 {
-		// end program
-		fmt.Println("Our conference is booked out. Come back next year.")
-		break
-	}
-	}else {
-		if !isValidName{
-			fmt.Println("First name or last name you entered is too short.")
+			// ending the program when we run out of tickets
+			if remainingTickets == 0 {
+			// end program
+			fmt.Println("Our conference is booked out. Come back next year.")
+			break
 		}
-		if !isValidEmail{
-			fmt.Println("Email address you entered doesn't contain @ sign.")
+		}else {
+			if !isValidName{
+				fmt.Println("First name or last name you entered is too short.")
+			}
+			if !isValidEmail{
+				fmt.Println("Email address you entered doesn't contain @ sign.")
+			}
+			if !isValidTicketNumber{
+				fmt.Println("Number of tickets you entered is invalid.")
+			}
 		}
-		if !isValidTicketNumber{
-			fmt.Println("Number of tickets you entered is invalid.")
-		}
-	}
 	}
 }
 
@@ -70,14 +70,6 @@ func getFirstNames() []string {
 	}
 	return firstNames
 
-}
-
-// function for user input validation
-func validateUserInput(firstName string,lastName string, email string, userTickets uint) (bool, bool, bool){
-	isValidName :=  len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
-	return isValidName ,isValidEmail, isValidTicketNumber
 }
 
 // fucntion for getting user input (first name, last name ,email and number of tickets)
