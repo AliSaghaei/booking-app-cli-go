@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"sync"
+	"time"
 )
 
 // package level variables
@@ -16,6 +18,8 @@ type userData struct {
 	email string
 	numberOfTickets uint
 }
+
+var wg = sync.WaitGroup{}
 
 func main() {
 
@@ -35,6 +39,8 @@ func main() {
 		if isValidName && isValidEmail && isValidTicketNumber {
 		
 			bookTicket(userTickets, firstName, lastName,email)
+			wg.Add(1)
+			go sendTicket(userTickets, firstName, lastName,email)
 		
 			// Call function GetFirstNames
 			firstNames := getFirstNames()
@@ -58,6 +64,7 @@ func main() {
 			}
 		}
 	}
+	wg.Wait()
 }
 
 //function for greating users
@@ -118,4 +125,13 @@ func bookTicket(userTickets uint, firstName string,lastName string, email string
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are remaining for %v\n", remainingTickets, conferenceName)
+}
+
+func sendTicket(userTickets uint, firstName string, lastName string, email string){
+	time.Sleep(10 * time.Second)
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("########################")
+	fmt.Printf("sending ticket:\n %v \n to email address %v\n", ticket, email)
+	fmt.Println("########################")
+	wg.Done()
 }
